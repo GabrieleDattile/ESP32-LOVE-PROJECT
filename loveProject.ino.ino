@@ -8,6 +8,30 @@
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite spr = TFT_eSprite(&tft);
 
+// =========================================================
+// ⬇️ USER CONFIGURATION - CHANGE YOUR VALUES HERE ⬇️
+// =========================================================
+
+// 1. Change the initials here (1 character recommended)
+#define INITIAL_LEFT  "?"
+#define INITIAL_RIGHT "?"
+
+// 2. Change your custom messages here
+// Use \n to create a new line. Keep lines short to fit the screen!
+String messages[] = {
+    "You are my\nfavorite\nperson!",
+    "Thinking\nof you\nalways!",
+    "Smile,\nyou are\nbeautiful!",
+    "My heart\nbeats\nonly for you",
+    "You are\nthe best thing\nin my life",
+    "I Love You\n[NAME]!" // <--- REPLACE [NAME] WITH YOUR PERSON'S NAME
+};
+int numMessages = 6;
+
+// =========================================================
+// ⬆️ END OF CONFIGURATION ⬆️
+// =========================================================
+
 OneButton button1(PIN_BUTTON_1, true);
 OneButton button2(PIN_BUTTON_2, true);
 
@@ -31,17 +55,7 @@ struct Particle {
 const int numParticles = 18;
 Particle particles[numParticles];
 
-String messages[] = {
-    "Sei la mia\npersona\npreferita!",
-    "Ricordati che\nti penso\nsempre!",
-    "Sorridi,\nsei bellissima!",
-    "Il mio cuore\nbatte\nsolo per te",
-    "Sei la cosa\npiu' bella\nche ho",
-    "Ti Amo\nEleonora!"
-};
-int numMessages = 6;
 int currentMessageIndex = 0;
-
 float animationPos = 0; 
 bool actionDone = false;
 
@@ -91,7 +105,7 @@ void drawRose(TFT_eSprite &sprite, int x, int y) {
 void drawPacman(TFT_eSprite &sprite, int x, int y, float mouthOpen, bool flip, bool isMs, uint16_t color) {
     uint16_t red = tft.color565(255, 0, 0);
     
-    // Body (Now using the custom color)
+    // Body 
     sprite.fillCircle(x, y, 15, color);
     
     // Mouth (Wedge)
@@ -104,7 +118,7 @@ void drawPacman(TFT_eSprite &sprite, int x, int y, float mouthOpen, bool flip, b
     sprite.fillCircle(eyeX, y - 6, 2, TFT_BLACK);
     
     if (isMs) {
-        // Simple elegant eyelashes (removed the triangular bow)
+        // Simple elegant eyelashes
         sprite.drawLine(eyeX, y-8, eyeX+(flip?2:-2), y-12, TFT_BLACK); 
         sprite.drawLine(eyeX+1, y-8, eyeX+(flip?3:-3), y-11, TFT_BLACK); 
     }
@@ -116,10 +130,10 @@ void drawButterfly(TFT_eSprite &sprite, int x, int y, uint16_t color, float wing
     uint16_t veinColor = tft.color565(30, 30, 30);
     uint16_t lightColor = tft.color565(255, 255, 255);
     
-    // Forewings (top) - more triangular
+    // Forewings (top)
     sprite.fillTriangle(x, y-4, x-w, y-h1, x-w/2, y, color);
     sprite.fillTriangle(x, y-4, x+w, y-h1, x+w/2, y, color);
-    // Hindwings (bottom) - rounded with tail tip
+    // Hindwings (bottom)
     sprite.fillEllipse(x-w/2, y+10, w/1.2, h2, color);
     sprite.fillEllipse(x+w/2, y+10, w/1.2, h2, color);
     
@@ -173,11 +187,11 @@ void drawBear(TFT_eSprite &sprite, int x, int y, bool flip, uint16_t bodyColor) 
     // Muzzle
     sprite.fillEllipse(x, y + 6, 12, 8, lightMuzzle);
     
-    // Eyes: Wide apart for Kawaii look
+    // Eyes
     int eyeX = flip ? -9 : 9;
     sprite.fillCircle(x + eyeX, y - 2, 3, (bodyColor == TFT_BLACK) ? tft.color565(40,40,40) : TFT_BLACK);
     sprite.fillCircle(x - eyeX, y - 2, 3, (bodyColor == TFT_BLACK) ? tft.color565(40,40,40) : TFT_BLACK);
-    // Highlights: The key to cuteness!
+    // Highlights
     sprite.fillCircle(x + eyeX - 1, y - 3, 1, TFT_WHITE);
     sprite.fillCircle(x - eyeX - 1, y - 3, 1, TFT_WHITE);
     
@@ -287,23 +301,23 @@ void loop() {
             drawParametricHeart(spr, 140, 80, baseScale + 0.8, tft.color565(100, 0, 20));
             drawParametricHeart(spr, 140, 80, baseScale, TFT_RED);
             
-            // Perfectly Centered Initials: G(Blue) ❤️ E(Pink)
-            uint16_t GerryBlue = tft.color565(0, 191, 255);
-            uint16_t ElePink = tft.color565(255, 105, 180);
+            // Render Configurable Initials
+            uint16_t colorLeft = tft.color565(0, 191, 255);   // Blue
+            uint16_t colorRight = tft.color565(255, 105, 180); // Pink
             
             spr.setTextSize(4);
             
             // Shadows for both (offset by 2px)
             spr.setTextColor(tft.color565(40, 0, 10));
-            spr.setCursor(140 - 36, 80 - 13); spr.print("G");
-            spr.setCursor(140 + 18, 80 - 13); spr.print("E");
+            spr.setCursor(140 - 36, 80 - 13); spr.print(INITIAL_LEFT);
+            spr.setCursor(140 + 18, 80 - 13); spr.print(INITIAL_RIGHT);
             drawTinyHeart(spr, 140 + 2, 80 + 2, tft.color565(60, 0, 10));
             
             // Color initials
             spr.setCursor(140 - 38, 80 - 15);
-            spr.setTextColor(GerryBlue); spr.print("G");
+            spr.setTextColor(colorLeft); spr.print(INITIAL_LEFT);
             spr.setCursor(140 + 16, 80 - 15);
-            spr.setTextColor(ElePink); spr.print("E");
+            spr.setTextColor(colorRight); spr.print(INITIAL_RIGHT);
             
             // Central Red Heart
             drawTinyHeart(spr, 140, 80, TFT_RED);
