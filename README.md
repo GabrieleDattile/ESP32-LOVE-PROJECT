@@ -7,7 +7,7 @@ This project uses an ESP32 to render beautiful, smooth animations including a be
 *Perfect for Valentine's Day, anniversaries, or just to surprise someone special.*
 
 ---
-![ <img width="2497" height="1496" alt="loveprojectesp32" src="https://github.com/user-attachments/assets/babc2a3e-d732-4aaf-903b-78bf521c3358" />]
+ <img width="2497" height="1496" alt="loveprojectesp32" src="https://github.com/user-attachments/assets/babc2a3e-d732-4aaf-903b-78bf521c3358" />
 
 
 ## ✨ Features
